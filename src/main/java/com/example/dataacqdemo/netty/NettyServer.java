@@ -57,6 +57,7 @@ public class NettyServer extends Thread{
                 @Override
                 public void initChannel(Channel ch) throws Exception {
                     ch.pipeline().addLast(new LineBasedFrameDecoder(2048));
+                    ch.pipeline().addLast(new TestInterceptor());//拦截器
                     ch.pipeline().addLast(new StringDecoder());//解码器
                     ch.pipeline().addLast(new StringEncoder());//编码器
                     ch.pipeline().addLast(new NettyDemoServerHandler());//业务处理

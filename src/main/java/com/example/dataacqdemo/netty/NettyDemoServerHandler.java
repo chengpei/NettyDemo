@@ -1,5 +1,6 @@
 package com.example.dataacqdemo.netty;
 
+import com.example.dataacqdemo.event.MyEvent;
 import com.example.dataacqdemo.services.BusinessService;
 import com.example.dataacqdemo.utils.ApplicationContextUtils;
 import io.netty.channel.ChannelHandlerContext;
@@ -22,13 +23,10 @@ public class NettyDemoServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        ctx.executor().execute(() -> {
-            if(msg instanceof String){
-                BusinessService businessService = ApplicationContextUtils.getBean("businessService", BusinessService.class);
-                businessService.testService((String) msg);
-                ctx.writeAndFlush(msg);
-            }
-        });
+        BusinessService businessService = ApplicationContextUtils.getBean("businessService", BusinessService.class);
+        businessService.testService((String) msg);
+        ApplicationContextUtils.publishEvent(new MyEvent(this, (String) msg));
+        ctx.writeAndFlush(msg);
     }
 
     @Override

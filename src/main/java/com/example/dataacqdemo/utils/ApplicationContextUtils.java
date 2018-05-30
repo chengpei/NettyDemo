@@ -3,6 +3,7 @@ package com.example.dataacqdemo.utils;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.ApplicationEvent;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
@@ -29,5 +30,9 @@ public class ApplicationContextUtils implements ApplicationContextAware {
     public static Object getBean(String beanId){
         Assert.notNull(applicationContext, "ApplicationContextAware未初始化完成");
         return applicationContext.getBean(beanId);
+    }
+
+    public static void publishEvent(ApplicationEvent event) {
+        applicationContext.publishEvent((Object)event);
     }
 }
